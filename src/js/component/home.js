@@ -4,128 +4,100 @@ import { useState, useEffect } from "react";
 import { checkPropTypes } from "prop-types";
 
 //create your first component
-export function Home() {
-	const [todo, setTodo] = useState([]);
-	const toDoListUrl =
-		"https://assets.breatheco.de/apis/fake/todos/user/tibisfly2";
+export function Home(props) {
+	const [todo, setTodo] = useState(["Make the bed ", " Wash my hands"]);
+	const [inputValue, setInputValue] = useState("");
 
-	function addTodo(e) {
-		let input = document.querySelector("input").value;
-		console.log(input);
-		if (e.key === "Enter" && input != "") {
-			let newTodos = [...todo, { label: input, done: false }];
-			setTodo(newTodos);
-			document.querySelector("input").value = "";
-			console.log(todo);
-			fetch(toDoListUrl, {
-				method: "PUT",
-				body: JSON.stringify(newTodos),
-				headers: {
-					"Content-Type": "application/json"
-				}
-			})
-				.then(resp => {
-					return resp.json();
-				})
-				.then(data => {
-					console.log(data);
-				})
-				.catch(error => {
-					console.log(error);
-				});
+	const handleClick = () => {
+		const newTodo = todo;
+		newTodo.push(inputValue);
+		setTodo(newTodo);
+		console.log(todo, ["Esto es todo"]);
+		setInputValue("");
+	};
 
-			console.log(todo);
-		}
-	}
+	const deleteItem = (index, event) => {
+		let newTodo = [...todo];
+		let removed = newTodo.splice(index, 1);
+		setTodo(newTodo);
+	};
+	// function updateInput(key, value) {
+	// 	this.setState({
+	// 		[key]: value
+	// 	});
+	// }
+	// function addItem() {
+	// 	//crear item con único id
+	// 	const newItem = {
+	// 		id: 1 + Math.random(),
+	// 		value: this.state.newItem.slice()
+	// 	};
+	// 	// copiar la lista actual de items
+	// 	const list = [...this.state.list];
 
-	function deleteTodo(elementIndex) {
-		var filtered = todo.filter(function(value, i) {
-			return elementIndex !== i;
-		});
-		setTodo(filtered);
-		fetch(toDoListUrl, {
-			method: "PUT",
-			body: JSON.stringify(filtered),
-			headers: {
-				"Content-Type": "application/json"
-			}
-		})
-			.then(resp => {
-				return resp.json();
-			})
-			.then(data => {
-				console.log(data);
-			})
-			.catch(error => {
-				console.log(error);
-			});
+	// 	// añadir nuevo item
+	// 	list.push(newItem);
 
-		console.log(filtered);
-	}
+	// 	// actualizar stado con una nueva lista y rsetearlo a newitem input
+	// 	this.setState({
+	// 		list,
+	// 		newItem: ""
+	// 	});
+	// }
+	// function deleteItem(id) {
+	// 	//copia de los items en la lista
 
-	function getTodos() {
-		fetch(toDoListUrl, { method: "GET" })
-			.then(response => response.json())
-			.then(responseJSON => {
-				setTodo(responseJSON);
-				console.log(responseJSON);
-			});
-	}
+	// 	const list = [...this.state.list];
 
-	useEffect(() => {
-		getTodos();
-	}, []);
+	// 	// filtro de los items borrados
+	// 	const updatedList = list.filter(item => item.id !== id);
 
+	// 	this.setState({ list: updatedList });
+	// }
 	return (
-		<div className="text-center mt-5">
-			<div className="row w-100">
-				<div className="col-md-12">
-					<h1 className="display-2">Tibis TO DO List</h1>
+		<div className="todo-list">
+			<div className="add-item-container">
+				<div className="text-center">Add item</div>
+				<br />
+				<input
+					className="inputs-container"
+					type="text"
+					placeholder="What needs to be done"
+					value={inputValue}
+					onChange={e => setInputValue(event.target.value)}
+				/>
+				<button onClick={handleClick}className="add-button">
+					Add
+				</button>
+				<br />
+				<ul>
+					{todo.map((item, index) => {
+						return (
+							<li className="key" key={index}>
+								{item}
+								<buttom
+									className="delete-button"
+									onClick={e => deleteItem(index, event)}>
+									X
+								</buttom>
+							</li>
+						);
+					})}
 
-					<div className="input container input-group mx-auto">
-						<input
-							type="text"
-							onKeyPress={e => {
-								addTodo(e);
-							}}
-						/>
-					</div>
-					<div className="list container">
-						<ul>
-							{todo.map((value, index) => (
-								<li className="list-group-item" key={index}>
-									{value.label}
-									<button
-										type="button"
-										onClick={event => deleteTodo(index)}>
-										<i className="fas fa-trash-alt" />
-									</button>
-								</li>
-							))}
-						</ul>
-						<div className="text-muted pb-1">
-							<p>{todo.length} to do</p>
-						</div>
-					</div>
-				</div>
+					{/* <li>{todo}</li> */}
+					{/* {this.state.list.map(item => {
+						return (
+							<li key={item.id}>
+								{item.value}
+								<buttom
+									onClick={() => this.deleteItem(item.id)}>
+									X
+								</buttom>
+							</li>
+						);
+					})} */}
+				</ul>
 			</div>
 		</div>
 	);
 }
-
-// return (
-// 	<div className="text-center mt-5">
-// 		<h1>Hello Rigo!</h1>
-// 		<p>
-// 			<img src={rigoImage} />
-// 		</p>
-// 		<a href="#" className="btn btn-success">
-// 			If you see this green button... bootstrap is working
-// 		</a>
-// 		<p>
-// 			Made by{" "}
-// 			<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-// 			love!
-// 		</p>
-// 	</div>
-// );
