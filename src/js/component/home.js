@@ -2,9 +2,11 @@ import React from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
 import { useState, useEffect } from "react";
 import { checkPropTypes } from "prop-types";
+import "../../styles/home.scss";
 
 //create your first component
 export function Home(props) {
+
 	const [todo, setTodo] = useState(["Make the bed ", " Wash my hands"]);
 	const [inputValue, setInputValue] = useState("");
 
@@ -20,40 +22,22 @@ export function Home(props) {
 		let newTodo = [...todo];
 		let removed = newTodo.splice(index, 1);
 		setTodo(newTodo);
-	};
-	// function updateInput(key, value) {
-	// 	this.setState({
-	// 		[key]: value
-	// 	});
-	// }
-	// function addItem() {
-	// 	//crear item con único id
-	// 	const newItem = {
-	// 		id: 1 + Math.random(),
-	// 		value: this.state.newItem.slice()
-	// 	};
-	// 	// copiar la lista actual de items
-	// 	const list = [...this.state.list];
+    };
+    
+ 
 
-	// 	// añadir nuevo item
-	// 	list.push(newItem);
+	// fetch(url, options)
+	// 		.then(response => {
+	// 			setName("");
+	// 			setImage("");
+	// 			setCategory("");
+	// 			return response.json();
+	// 		})
+	// 		.then(responseObject => console.log(responseObject))
+	// 		.catch(err => console.error(err));
+	
 
-	// 	// actualizar stado con una nueva lista y rsetearlo a newitem input
-	// 	this.setState({
-	// 		list,
-	// 		newItem: ""
-	// 	});
-	// }
-	// function deleteItem(id) {
-	// 	//copia de los items en la lista
-
-	// 	const list = [...this.state.list];
-
-	// 	// filtro de los items borrados
-	// 	const updatedList = list.filter(item => item.id !== id);
-
-	// 	this.setState({ list: updatedList });
-	// }
+	
 	return (
 		<div className="todo-list">
 			<div className="add-item-container">
@@ -66,7 +50,7 @@ export function Home(props) {
 					value={inputValue}
 					onChange={e => setInputValue(event.target.value)}
 				/>
-				<button onClick={handleClick}className="add-button">
+				<button onClick={handleClick} className="add-button">
 					Add
 				</button>
 				<br />
