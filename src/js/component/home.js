@@ -3,6 +3,7 @@ import rigoImage from "../../img/rigo-baby.jpg";
 import { useState, useEffect } from "react";
 import { checkPropTypes } from "prop-types";
 import "../../styles/home.scss";
+import { event } from "jquery";
 
 //create your first component
 export function Home(props) {
@@ -16,7 +17,7 @@ export function Home(props) {
 		setInputValue("");
 		fetch("http://assets.breatheco.de/apis/fake/todos/user/yolandagb", {
 			method: "POST",
-			body: JSON.stringify(todo),
+			body: JSON.stringify(newTodo),
 			headers: {
 				"Content-Type": "application/json"
 			}
@@ -27,12 +28,11 @@ export function Home(props) {
 	};
 	const deleteItem = (index, event) => {
 		let newTodo = [...todo];
-		let removed = newTodo.splice(index, 1);
+		newTodo.splice(index, 1);
 		setTodo(newTodo);
-
 		fetch("http://assets.breatheco.de/apis/fake/todos/user/yolandagb", {
 			method: "PUT",
-			body: JSON.stringify(todo),
+			body: JSON.stringify(newTodo),
 			headers: {
 				"Content-Type": "application/json"
 			}
@@ -66,7 +66,7 @@ export function Home(props) {
 					type="text"
 					placeholder="What needs to be done"
 					value={inputValue}
-					onChange={e => setInputValue(event.target.value)}
+					onChange={event => setInputValue(event.target.value)}
 				/>
 				<button onClick={handleClick} className="add-button">
 					Add
@@ -77,11 +77,11 @@ export function Home(props) {
 						return (
 							<li className="key" key={index}>
 								{item}
-								<buttom
+								<button
 									className="delete-button"
-									onClick={e => deleteItem(index, event)}>
+									onClick={() => deleteItem(index)}>
 									X
-								</buttom>
+								</button>
 							</li>
 						);
 					})}
