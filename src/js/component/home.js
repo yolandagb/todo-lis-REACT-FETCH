@@ -12,16 +12,20 @@ export function Home(props) {
 
 	const handleClick = () => {
 		const newTodo = todo;
-		newTodo.push(inputValue);
+		let newItem = { label: inputValue, done: false };
+		newTodo.push(newItem);
 		setTodo(newTodo);
 		setInputValue("");
-		fetch("http://assets.breatheco.de/apis/fake/todos/user/yolandagb", {
-			method: "POST",
-			body: JSON.stringify(newTodo),
-			headers: {
-				"Content-Type": "application/json"
+		fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/mentoriajulio",
+			{
+				method: "PUT",
+				body: JSON.stringify(newTodo),
+				headers: {
+					"Content-Type": "application/json"
+				}
 			}
-		})
+		)
 			.then(resp => resp.json())
 			.then(data => data.json())
 			.catch(err => err());
@@ -30,25 +34,32 @@ export function Home(props) {
 		let newTodo = [...todo];
 		newTodo.splice(index, 1);
 		setTodo(newTodo);
-		fetch("http://assets.breatheco.de/apis/fake/todos/user/yolandagb", {
-			method: "PUT",
-			body: JSON.stringify(newTodo),
-			headers: {
-				"Content-Type": "application/json"
+		fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/mentoriajulio",
+			{
+				method: "PUT",
+				body: JSON.stringify(newTodo),
+				headers: {
+					"Content-Type": "application/json"
+				}
 			}
-		})
+		)
 			.then(resp => resp.json())
 			.then(data => data.json())
 			.catch(err => err());
 	};
 
 	const getTodo = () => {
-		fetch("http://assets.breatheco.de/apis/fake/todos/user/yolandagb", {
-			method: "GET"
-		})
+		fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/mentoriajulio",
+			{
+				method: "GET"
+			}
+		)
 			.then(response => response.json())
-			.then(responseJSON => {
-				setTodo(responseJSON);
+			.then(json => {
+				setTodo(json);
+				console.log(json);
 			});
 	};
 
@@ -76,7 +87,7 @@ export function Home(props) {
 					{todo.map((item, index) => {
 						return (
 							<li className="key" key={index}>
-								{item}
+								{item.label}
 								<button
 									className="delete-button"
 									onClick={() => deleteItem(index)}>
