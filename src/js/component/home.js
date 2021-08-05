@@ -96,19 +96,6 @@ export function Home(props) {
 							</li>
 						);
 					})}
-
-					{/* <li>{todo}</li> */}
-					{/* {this.state.list.map(item => {
-						return (
-							<li key={item.id}>
-								{item.value}
-								<buttom
-									onClick={() => this.deleteItem(item.id)}>
-									X
-								</buttom>
-							</li>
-						);
-					})} */}
 				</ul>
 			</div>
 		</div>
